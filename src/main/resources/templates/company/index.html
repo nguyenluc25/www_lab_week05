@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Company Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Additional custom styles */
+        .table th, .table td {
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #343a40;
+        }
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<!-- Thêm header vào trang -->
+<div th:replace="~{fragment/header :: navbar}"></div>
+
+<!-- Nội dung trang index -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Company Page</h1>
+
+    <!-- Create Job Button -->
+    <div class="mb-4 text-end">
+        <a th:href="@{/company/create-job}" class="btn btn-primary">Create Job</a>
+    </div>
+
+    <!-- Job List Section -->
+    <h2 class="mb-3">Job List</h2>
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${jobs}">
+            <td th:text="${job.id}"></td>
+            <td th:text="${job.name}"></td>
+            <td th:text="${job.description}"></td>
+            <td>
+                <a th:href="@{'/company/suitable-candidate/' + ${job.id}}" class="btn btn-secondary">View Candidates</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
