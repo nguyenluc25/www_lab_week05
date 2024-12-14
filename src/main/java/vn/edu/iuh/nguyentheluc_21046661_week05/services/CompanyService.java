@@ -1,5 +1,6 @@
 package vn.edu.iuh.nguyentheluc_21046661_week05.services;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class CompanyService {
     private final JobRepository jobRepository;
     private final JobSkillRepository jobSkillRepository;
     private final CandidateSkillRepository candidateSkillRepository;
+    private final CandidateRepository candidateRepository;
+
+    private final EmailService emailService;
 
     public List<Skill> getAllSkills() {
         return skillRepository.findAll();
@@ -78,5 +82,11 @@ public class CompanyService {
         return new ArrayList<>(candidatesSet);
     }
 
-
+    public void sendJobInvitationEmail(Long candidateId) throws MessagingException {
+        Candidate candidate = candidateRepository.findById(candidateId).orElseThrow(() -> new RuntimeException("Candidate not found"));
+        String subject = "Job Invitation ";
+        String body = "Dear " + candidate.getFullName() + ",\n\n" +
+                "We have found a job that matches your skills. Please apply for the position if you're interested.";
+        emailService.sendEmail(candidate.getEmail(), subject, body);
+    }
 }

@@ -1,5 +1,6 @@
 package vn.edu.iuh.nguyentheluc_21046661_week05.controllers;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -77,5 +78,18 @@ public class CompanyController {
         List<Candidate> candidates = companyService.getSuitableCandidates(jobId);
         model.addAttribute("candidates", candidates);
         return "company/suitable-candidate";
+    }
+
+    @PostMapping("/company/send-email/{candidateId}")
+    public String sendEmail(@PathVariable("candidateId") Long candidateId, HttpSession session) throws MessagingException {
+        if(session.getAttribute("account") == null) {
+            return "redirect:/";
+        }
+        if(session.getAttribute("accountType").equals("CANDIDATE")) {
+            return "redirect:/";
+        }
+
+        companyService.sendJobInvitationEmail(candidateId);
+        return "redirect:/company";
     }
 }
